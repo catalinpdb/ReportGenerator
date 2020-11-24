@@ -38,7 +38,6 @@ public class JiraController {
     @GetMapping("/getJiraTicket/{id}")
     Set<JiraTicket> getJiraTicketsById(@PathVariable String id){
         return jiraTickets.stream().filter(ticket_id -> ticket_id.getIssue_key().equals(id)).collect(Collectors.toSet());
-
     }
 
   // to create a new controller that has path param called NARID (possible values 1234, 4567, 7890)
