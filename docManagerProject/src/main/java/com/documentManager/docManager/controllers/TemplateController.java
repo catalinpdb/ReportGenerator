@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.websocket.server.PathParam;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class TemplateController {
@@ -16,8 +19,18 @@ public class TemplateController {
     private JiraService jiraService;
 
     @GetMapping("/generateTER/{id}")
-    public JiraTicket[] generateTER(@PathParam("id") String id) {
-        return jiraService.getJiraTicketsById(id);
+    public void generateTER(@PathParam("id") String id) throws IOException {
+        DocumentGeneratorController.setDocumentTemplate("ter_template.docx");
+
+        for (JiraTicket jiraTicket: jiraService.getJiraTicketsById(id)) {
+            List<String> rowCells = new ArrayList<>();
+            rowCells.add(jiraTicket.getIssue_key());
+            rowCells.add(jiraTicket.getDescription());
+            rowCells.add(jiraTicket.getPriority());
+            rowCells.add(jiraTicket.getSeverity());
+            rowCells.add(jiraTicket.getStatus());
+            DocumentGeneratorController.addRowToTable( "Issue type - Key - Summary - Priority - Severity - Status",rowCells);
+        }
     }
 
 }
