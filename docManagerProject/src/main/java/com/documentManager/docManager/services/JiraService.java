@@ -12,6 +12,6 @@ public class JiraService {
     private RestTemplate restTemplate;
 
     public JiraTicket[] getJiraTicketsById(String id) {
-        return restTemplate.getForObject(String.format("http://localhost:8080/getJiraTicket/%d",id), JiraTicket[].class);
+        return restTemplate.getForObject(String.format("http://localhost:8080/getJiraTicketsByNarID/%s",id), JiraTicket[].class);
     }
 }

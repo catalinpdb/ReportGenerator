@@ -4,6 +4,7 @@ import com.documentManager.docManager.models.JiraTicket;
 import com.documentManager.docManager.services.JiraService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.websocket.server.PathParam;
@@ -19,7 +20,7 @@ public class TemplateController {
     private JiraService jiraService;
 
     @GetMapping("/generateTER/{id}")
-    public void generateTER(@PathParam("id") String id) throws IOException {
+    public void generateTER(@PathVariable String id) throws IOException {
         DocumentGeneratorController.setDocumentTemplate("ter_template.docx");
 
         for (JiraTicket jiraTicket: jiraService.getJiraTicketsById(id)) {
@@ -31,6 +32,7 @@ public class TemplateController {
             rowCells.add(jiraTicket.getStatus());
             DocumentGeneratorController.addRowToTable( "Issue type - Key - Summary - Priority - Severity - Status",rowCells);
         }
+        DocumentGeneratorController.saveDocument("modified.docx");
     }
 
 }
